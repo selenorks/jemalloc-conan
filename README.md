@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/selenorks/conan-hwloc.svg)](https://travis-ci.org/selenorks/conan-hwloc)
+[![Build status](https://ci.appveyor.com/api/projects/status/ndo0i5yvg830oii6?svg=true)](https://ci.appveyor.com/project/selenorks/jemalloc-conan)
+
 
 
 # conan-jemalloc
