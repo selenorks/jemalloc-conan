@@ -13,5 +13,5 @@ if __name__ == "__main__":
         builder.builds = filtered_builds
         
     if platform.system() == "Linux":
-        builder.add({"arch": "x86_64", "build_type": "Release", "compiler.libcxx": "libstdc++", 'compiler.version': '5.2', 'compiler': 'gcc'})
+        builder.add({"arch": "x86_64", "build_type": "Release", "compiler.libcxx": "libstdc++", 'compiler.version': '4.8', 'compiler': 'gcc'})
     builder.run()
