@@ -11,8 +11,15 @@ env:
     - CONAN_TOTAL_PAGES=1
     - CONAN_CURRENT_PAGE=1
 
-  matrix:
-    - CONAN_GCC_VERSIONS=4.8
+matrix:
+    include:
+        - os: linux
+          dist: trusty
+          env: CONAN_GCC_VERSIONS=4.8 CONAN_USE_DOCKER=1
+          services:
+            - docker
+          sudo: required
+          language: cpp
 
 install:
   - ./.travis/install.sh
