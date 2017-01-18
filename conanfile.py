@@ -7,11 +7,13 @@ from conans import CMake
 class JeMallocConan(ConanFile):
     name = "jemalloc"
     version = "4.3.1"
-    ZIP_FOLDER_NAME = "jemalloc-cmake-jemalloc-cmake.4.3.1" #"jemalloc-%s" % version
+    ZIP_FOLDER_NAME = "jemalloc-cmake-jemalloc-cmake.%s" % version
     settings = "os", "arch", "compiler", "build_type"
 
     exports = ["CMakeLists.txt", "FindJemalloc.cmake"]
-    url="http://github.com/selenorks/jemalloc-conan"
+    description = "jemalloc is a general purpose malloc(3) implementation that emphasizes fragmentation avoidance and scalable concurrency support."
+    license="https://github.com/jemalloc/jemalloc/blob/dev/COPYING"
+    url = "http://github.com/selenorks/jemalloc-conan"
     
     def system_requirements(self):
         self.global_system_requirements=True
@@ -22,18 +24,11 @@ class JeMallocConan(ConanFile):
             self.run("sudo apt-get install libudev-dev libudev-dev:i386 || true ")
             self.run("sudo apt-get install libxml2-dev libxml2-dev:i386 || true ")
 
-    def conan_info(self):
-        # We don't want to change the package for each compiler version but
-        # we need the setting to compile with cmake
-        # self.info.settings.compiler.version = "any"
-        if self.settings.os == "Windows":
-            self.info.settings.build_type = "Release"
-
     def source(self):
-        zip_name = "jemalloc-cmake.4.3.1.zip"
+        zip_name = "jemalloc-cmake.%s.zip" % self.version
         major = ".".join(self.version.split("."))
         import urllib
-        urllib.urlretrieve ("https://github.com/jemalloc/jemalloc-cmake/archive/jemalloc-cmake.4.3.1.zip", "jemalloc-cmake.4.3.1.zip")
+        urllib.urlretrieve ("https://github.com/jemalloc/jemalloc-cmake/archive/jemalloc-cmake.%s.zip" % self.version, zip_name)
         unzip(zip_name)
         os.unlink(zip_name)
 
