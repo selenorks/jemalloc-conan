@@ -11,7 +11,7 @@ class JeMallocConan(ConanFile):
     settings = "os", "arch", "compiler", "build_type"
 
     exports = ["CMakeLists.txt", "FindJemalloc.cmake"]
-    url="http://github.com/selenorks/conan-jemalloc"
+    url="http://github.com/selenorks/jemalloc-conan"
     
     def system_requirements(self):
         self.global_system_requirements=True
