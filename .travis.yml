@@ -1,7 +1,5 @@
 os: linux
 dist: precise
-services:
-   - docker
 sudo: required
 language: python
 env:
@@ -14,7 +12,7 @@ env:
     - CONAN_CURRENT_PAGE=1
 
   matrix:
-    - CONAN_GCC_VERSIONS=4.8 CONAN_USE_DOCKER=1
+    - CONAN_GCC_VERSIONS=4.8
 
 install:
   - ./.travis/install.sh
