@@ -36,11 +36,15 @@ find_package_handle_standard_args(jemalloc DEFAULT_MSG
     JEMALLOC_LIBRARIES
     JEMALLOC_INCLUDE_DIR
 )
+find_package (Threads)
 
 if(jemalloc_FOUND)
     add_library(jemalloc STATIC IMPORTED)
 	set_property(TARGET jemalloc PROPERTY IMPORTED_LOCATION "${JEMALLOC_LIBRARIES}")
-	set_property(TARGET jemalloc PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${JEMALLOC_INCLUDE_DIR};${JEMALLOC_INCLUDE_DIR}/msvc_compat")
+	if(WIN32)
+        set_property(TARGET jemalloc PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${JEMALLOC_INCLUDE_DIR};${JEMALLOC_INCLUDE_DIR}/msvc_compat")
+    endif()
+    set_property(TARGET jemalloc PROPERTY INTERFACE_LINK_LIBRARIES "Threads::Threads")
 endif()
 
 mark_as_advanced(

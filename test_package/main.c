@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #define DLLEXPORT
+#define JEMALLOC_NO_DEMANGLE
 #include <jemalloc/jemalloc.h>
 
 void

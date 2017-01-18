@@ -6,7 +6,7 @@ include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 
 CONAN_BASIC_SETUP()
 
-find_package(JeMalloc)
+find_package(Jemalloc)
 
 IF(JEMALLOC_FOUND)
     include_directories(${JEMALLOC_INCLUDE_DIR})

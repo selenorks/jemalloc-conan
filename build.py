@@ -3,6 +3,7 @@ import platform
 
 if __name__ == "__main__":
     builder = ConanMultiPackager()
+    
     if platform.system() == "Windows":
         builder.add_common_builds()
         filtered_builds = []
@@ -10,4 +11,7 @@ if __name__ == "__main__":
             if settings["compiler"] == "Visual Studio" and settings["compiler.version"] == "14" and settings["compiler.runtime"].startswith("MD"):
                  filtered_builds.append([settings, options])
         builder.builds = filtered_builds
-        builder.run()
+        
+    if platform.system() == "Linux":
+        builder.add({"arch": "x86_64", "build_type": "Release", "compiler.libcxx": "libstdc++", 'compiler.version': '5.2', 'compiler': 'gcc'})
+    builder.run()
