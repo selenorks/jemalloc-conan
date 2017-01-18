@@ -1,11 +1,13 @@
 from conan.packager import ConanMultiPackager
+import platform
 
 if __name__ == "__main__":
-    builder = ConanMultiPackager(username="selenorks")
-    compiler = {"compiler": "Visual Studio", "compiler.version": "14"}
-    builder.add(dict({"arch": "x86", "build_type": "Release", "compiler.runtime": "MD"}.items() + compiler.items()))
-    builder.add(dict({"arch": "x86", "build_type": "Debug", "compiler.runtime": "MDd"}.items() + compiler.items()))
-    builder.add(dict({"arch": "x86_64", "build_type": "Release", "compiler.runtime": "MD"}.items() + compiler.items()))
-    builder.add(dict({"arch": "x86_64", "build_type": "Debug", "compiler.runtime": "MDd"}.items() + compiler.items()))
-    
-    builder.run()
+    builder = ConanMultiPackager()
+    if platform.system() == "Windows":
+        builder.add_common_builds()
+        filtered_builds = []
+        for settings, options in builder.builds:
+            if settings["compiler"] == "Visual Studio" and settings["compiler.version"] == "14" and settings["compiler.runtime"].startswith("MD"):
+                 filtered_builds.append([settings, options])
+        builder.builds = filtered_builds
+        builder.run()
