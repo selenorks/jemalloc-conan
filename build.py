@@ -3,7 +3,6 @@ import platform
 
 if __name__ == "__main__":
     builder = ConanMultiPackager()
-    
     if platform.system() == "Windows":
         builder.add_common_builds()
         filtered_builds = []
@@ -14,4 +13,5 @@ if __name__ == "__main__":
         
     if platform.system() == "Linux":
         builder.add({"arch": "x86_64", "build_type": "Release", "compiler.libcxx": "libstdc++", 'compiler.version': '4.8', 'compiler': 'gcc'})
+        builder.add({"arch": "x86", "build_type": "Release", "compiler.libcxx": "libstdc++", 'compiler.version': '4.8', 'compiler': 'gcc'})
     builder.run()

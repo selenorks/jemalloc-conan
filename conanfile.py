@@ -45,8 +45,8 @@ class JeMallocConan(ConanFile):
             self.run('cmake .. %s' % (cmake.command_line))
             self.run("cmake --build . %s" % (cmake.build_config))
         else:
-            arch = ""# "-m32 " if self.settings.arch == "x86" else ""
-            self.run("cd %s && ./autogen.sh --with-jemalloc-prefix" % (self.ZIP_FOLDER_NAME))
+            flags =  "CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32" if self.settings.arch == "x86" else ""
+            self.run("cd %s && ./autogen.sh --with-jemalloc-prefix %s" % (self.ZIP_FOLDER_NAME, flags))
             self.run("cd %s && make" % self.ZIP_FOLDER_NAME)
 
     def package(self):
