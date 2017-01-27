@@ -22,7 +22,7 @@ find_path(JEMALLOC_ROOT_DIR
 )
 
 find_library(JEMALLOC_LIBRARIES
-    NAMES jemalloc
+    NAMES jemalloc_pic jemalloc
     HINTS ${JEMALLOC_ROOT_DIR}/lib
 )
 
