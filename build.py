@@ -20,10 +20,9 @@ if __name__ == "__main__":
         builder.builds = filtered_builds
 
     if platform.system() == "Darwin":
-        filtered_builds = []
-        for settings, options in builder.builds:
-            if settings["compiler"] == "apple-clang" and settings["compiler.version"] == "7.3" and settings["arch"].startswith("x86"):
-                 filtered_builds.append([settings, options])
-        builder.builds = filtered_builds
+        builder.add({"arch": "x86", "build_type": "Release"})
+        builder.add({"arch": "x86_64", "build_type": "Release"})
+        builder.add({"arch": "x86", "build_type": "Debug"})
+        builder.add({"arch": "x86_64", "build_type": "Debug"})
 
     builder.run()
