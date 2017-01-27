@@ -46,6 +46,8 @@ class JeMallocConan(ConanFile):
             self.run("cmake --build . %s" % (cmake.build_config))
         else:
             compile_flag = "-m32 " if self.settings.arch == "x86" else ""
+            compile_flag += " -fPIC "
+            compile_flag += " -O3 -g " if str(self.info.settings.build_type) == "Release" else "-O0 -g "
             linker_flag = "-m32 " if self.settings.arch == "x86" else ""
             compile_flag += "-mmacosx-version-min=10.7 " if self.settings.os == "Macos" else ""
             self.run("cd %s && CFLAGS='%s' CXXFLAGS='%s' LDFLAGS='%s' ./autogen.sh --with-jemalloc-prefix" 
