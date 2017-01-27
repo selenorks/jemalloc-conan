@@ -48,7 +48,7 @@ class JeMallocConan(ConanFile):
             compile_flag = "-m32 " if self.settings.arch == "x86" else ""
             linker_flag = "-m32 " if self.settings.arch == "x86" else ""
             compile_flag += "-mmacosx-version-min=10.7 " if self.settings.os == "Macos" else ""
-            self.run("cd %s && ./autogen.sh --with-jemalloc-prefix CFLAGS='%s' CXXFLAGS='%s' LDFLAGS='%s'" 
+            self.run("cd %s && CFLAGS='%s' CXXFLAGS='%s' LDFLAGS='%s' ./autogen.sh --with-jemalloc-prefix" 
                      % (self.ZIP_FOLDER_NAME, compile_flag, compile_flag, linker_flag))
             self.run("cd %s && make" % self.ZIP_FOLDER_NAME)
 
