@@ -18,17 +18,7 @@ class JeMallocConan(ConanFile):
     url = "http://github.com/selenorks/jemalloc-conan"
 
     def source(self):
-        zip_name = "jemalloc-cmake.%s.zip" % self.version
-        major = ".".join(self.version.split("."))
-        import urllib
-        if platform.system() == "Windows":
-            url = "https://github.com/jemalloc/jemalloc-cmake/archive/jemalloc-cmake.%s.zip" % self.version
-            urllib.urlretrieve (url, zip_name)
-            unzip(zip_name)
-            os.unlink(zip_name)
-        else:
-            self.run("git clone https://github.com/jemalloc/jemalloc.git %s" % self.ZIP_FOLDER_NAME)
-            self.run("cd %s && git checkout %s" % (self.ZIP_FOLDER_NAME, self.version))
+        self.run("git clone https://github.com/jemalloc/jemalloc-cmake.git %s -b jemalloc-cmake.%s" % (self.ZIP_FOLDER_NAME, self.version))
 
     def build(self):
         """ Define your project building. You decide the way of building it
