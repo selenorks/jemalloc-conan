@@ -46,7 +46,7 @@ class JeMallocConan(ConanFile):
                 "CC=\"$(xcrun -find -sdk %s clang)\"" % (sdk),
                 "CXX=\"$(xcrun -find -sdk %s clang++)\"" % (sdk),
                 "LDFLAGS=\"%s\"" % host_flags,
-                "CXXFLAGS=\"%s %s\"" % (host_flags, flags),
+                "CPPFLAGS=\"%s %s\"" % (host_flags, flags),
                 "CFLAGS=\"%s %s\"" % (host_flags, flags)
                 ]
 
