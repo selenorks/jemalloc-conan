@@ -18,7 +18,7 @@ class JeMallocConan(ConanFile):
     url = "http://github.com/selenorks/jemalloc-conan"
 
     def source(self):
-        self.run("git clone https://github.com/jemalloc/jemalloc-cmake.git %s -b jemalloc-cmake.%s" % (self.ZIP_FOLDER_NAME, self.version))
+        self.run("git clone https://github.com/jemalloc/jemalloc-cmake.git %s -b jemalloc-cmake.%s --depth 1" % (self.ZIP_FOLDER_NAME, self.version))
 
     def build(self):
         """ Define your project building. You decide the way of building it
@@ -39,7 +39,7 @@ class JeMallocConan(ConanFile):
             sdk = "iphoneos"
             arch = self.settings.arch if self.settings.arch != "armv8" else "arm64"
             platform_define =  "__arm__" if self.settings.arch != "armv8" else  "__arm64__"
-            host_flags = "-arch %s -miphoneos-version-min=5.0 -isysroot $(xcrun -sdk %s --show-sdk-path) -I$(xcrun -sdk %s --show-sdk-path) -D%s" % (arch, sdk, sdk, platform_define)
+            host_flags = "-arch %s -miphoneos-version-min=5.0 -isysroot $(xcrun -sdk %s --show-sdk-path) -I$(xcrun -sdk %s --show-sdk-path)/usr/include/ -D%s" % (arch, sdk, sdk, platform_define)
             flags = " -O3 -g " if str(self.info.settings.build_type) == "Release" else "-O0 -g "
             exports = [ "HOST_FLAGS=\"%s\"" % host_flags,
                 "CHOST=\"arm-apple-darwin\"",
