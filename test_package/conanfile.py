@@ -18,13 +18,15 @@ class DefaultNameConan(ConanFile):
     requires = "jemalloc/4.3.1@%s/%s" % (username, channel)
 
     def build(self):
-        cmake = CMake(self.settings)
-        self.run('cmake %s %s' % (self.conanfile_directory, cmake.command_line))
-        self.run("cmake --build . %s" % cmake.build_config)
+        if not (self.settings.os == "iOS"):
+            cmake = CMake(self.settings)
+            self.run('cmake %s %s' % (self.conanfile_directory, cmake.command_line))
+            self.run("cmake --build . %s" % cmake.build_config)
         
     def imports(self):
         self.copy(pattern="*.dll", dst="bin", src="bin")
         self.copy(pattern="*.dylib", dst="bin", src="lib")
         
     def test(self):
-        self.run("cd bin && .%smain" % os.sep)
+        if not (self.settings.os == "iOS"):
+            self.run("cd bin && .%smain" % os.sep)
