@@ -11,9 +11,15 @@ matrix:
     include:
         - os: linux
           dist: trusty
-          env: CONAN_GCC_VERSIONS=4.8 CONAN_USE_DOCKER=1
+          env: CONAN_GCC_VERSIONS=4.8 CONAN_USE_DOCKER=1 CONAN_ARCHS=x86,x86_64
           services:
             - docker
+          sudo: required
+          language: cpp
+          
+        - os: linux
+          dist: trusty
+          env: CONAN_ARCHS=armv7,armv8 ANDROID=1
           sudo: required
           language: cpp
 

@@ -18,7 +18,7 @@ class DefaultNameConan(ConanFile):
     requires = "jemalloc/4.3.1@%s/%s" % (username, channel)
 
     def build(self):
-        if not (self.settings.os == "iOS"):
+        if not (self.settings.os == "iOS" or self.settings.os == "Android"):
             cmake = CMake(self.settings)
             self.run('cmake %s %s' % (self.conanfile_directory, cmake.command_line))
             self.run("cmake --build . %s" % cmake.build_config)
@@ -28,5 +28,5 @@ class DefaultNameConan(ConanFile):
         self.copy(pattern="*.dylib", dst="bin", src="lib")
         
     def test(self):
-        if not (self.settings.os == "iOS"):
+        if not (self.settings.os == "iOS" or self.settings.os == "Android"):
             self.run("cd bin && .%smain" % os.sep)
