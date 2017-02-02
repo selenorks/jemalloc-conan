@@ -10,7 +10,7 @@ class JeMallocConan(ConanFile):
     ZIP_FOLDER_NAME = "jemalloc-cmake-jemalloc-cmake.%s" % version
     settings = "os", "arch", "compiler", "build_type"
 
-    exports = ["CMakeLists.txt", "FindJemalloc.cmake"]
+    exports = ["CMakeLists.txt", "FindJemalloc.cmake", "android_build.sh"]
     description = "jemalloc is a general purpose malloc(3) implementation that emphasizes fragmentation avoidance and scalable concurrency support."
     license="https://github.com/jemalloc/jemalloc/blob/dev/COPYING"
     url = "http://github.com/selenorks/jemalloc-conan"
@@ -58,60 +58,13 @@ class JeMallocConan(ConanFile):
                 print("Please set envirement varible ANDROID_NDK")
                 sys.exit(-1)
 
-            if self.settings.arch == "armv7":
-                flags = "-DANDROID \
--isystem ${ANDROID_NDK}/platforms/${PLATFORM}/arch-arm/usr/include \
--isystem ${ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/include \
--isystem ${ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a/include \
--isystem ${ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/include/backward \
--fexceptions -Wno-psabi --sysroot=${ANDROID_NDK}/platforms/${PLATFORM}/arch-arm -funwind-tables -finline-limit=64 -fsigned-char -no-canonical-prefixes -march=armv7-a -mfloat-abi=softfp -mfpu=neon -fdata-sections -ffunction-sections -Wa,--noexecstack  -Wl,--fix-cortex-a8 -Wl,--no-undefined -Wl,--gc-sections -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now -Wl,-z,nocopyreloc -fdiagnostics-color=always -mthumb -fomit-frame-pointer -fno-strict-aliasing -fPIC"
-                exports = [
-                    "PLATFORM=android-16" 
-                    "CC=\"${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-gcc\"",
-                    "CXX=\"${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-g++\"",
-                    "LDFLAGS=\"-fPIC -L${ANDROID_NDK}/platforms/${PLATFORM}/arch-arm/usr/lib --sysroot=${ANDROID_NDK}/platforms/${PLATFORM}/arch-arm\"",
-                    "CPPFLAGS=\"%s\"" % (flags),
-                    "CFLAGS=\"%s\"" % (flags),
-                    "CXXFLAGS=\"%s\"" % (flags),
-                    "PATH=\"$ANDROID_NDK/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/arm-linux-androideabi/bin:$PATH\"",
-                    ]
-                opt = "--host=x86_64-linux --build=x86_64-pc-linux-gnu --with-jemalloc-prefix --target=arm-linux-androideabi --disable-tls "
-            else:
-                flags = "-DANDROID \
--isystem ${ANDROID_NDK}/platforms/${PLATFORM}/arch-arm64/usr/include \
--isystem ${ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/include \
--isystem ${ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/libs/arch-arm64/include \
--isystem ${ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/include/backward \
--Wno-psabi --sysroot=${ANDROID_NDK}/platforms/${PLATFORM}/arch-arm64 -funwind-tables -fsigned-char -no-canonical-prefixes -fdata-sections -ffunction-sections -Wa,--noexecstack  -fomit-frame-pointer -fstrict-aliasing -funswitch-loops -finline-limit=300 -O3 -DNDEBUG -fPIC"
-            
-                exports = [
-                    "PLATFORM=android-21" 
-                    "CC=\"${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-gcc\"",
-                    "CXX=\"${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-g++\"",
-                    "LDFLAGS=\"-fPIC -L${ANDROID_NDK}/platforms/${PLATFORM}/arch-arm64/usr/lib --sysroot=${ANDROID_NDK}/platforms/${PLATFORM}/arch-arm64\"",
-                    "CPPFLAGS=\"%s\"" % (flags),
-                    "CFLAGS=\"%s\"" % (flags),
-                    "CXXFLAGS=\"%s\"" % (flags),
-                    "PATH=\"$ANDROID_NDK/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64/aarch64-linux-android/bin:$PATH\"",
-                    ]
-                opt = "--host=x86_64-linux --build=x86_64-pc-linux-gnu --with-jemalloc-prefix --target=arm-linux-androideabi --disable-tls --disable-syscall "
+            flags = " -O3 -g -DNDEBUG " if str(self.info.settings.build_type) == "Release" else "-O0 -g "
+            opts = "" if str(self.info.settings.build_type) == "Release" else " --enable-debug "
 
-            flags += " -O3 -g -DNDEBUG " if str(self.info.settings.build_type) == "Release" else "-O0 -g "
-            opt += "" if str(self.info.settings.build_type) == "Release" else " --enable-debug "
-            
-            script = os.path.abspath(os.path.join(self.ZIP_FOLDER_NAME,"build.sh"))
-            file = open(script ,"w")
-            file.write("#!/bin/bash\n")
-            file.write("".join(["export %s\n" %x for x in exports]))
-            file.write("echo CC=${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-gcc\n")
-            file.write("echo $CC\n")
-            file.write("cd %s && ./autogen.sh %s" % (os.path.abspath(self.ZIP_FOLDER_NAME), opt))
-            file.write("\n")
-            file.close()
-            self.run("chmod +x %s" % script)
-
-            self.run(os.path.join(self.ZIP_FOLDER_NAME, script))
-            self.run("cd %s && make" % (self.ZIP_FOLDER_NAME))
+            root = os.path.dirname(os.path.abspath(__file__))
+            build = os.path.join(root, "android_build.sh")
+            self.run('cd %s && OPTS="%s" OPT_FLAGS="%s" ARCH="%s" %s' % (self.ZIP_FOLDER_NAME, opts, flags, self.settings.arch, build))
+            self.run("cd %s && make" % self.ZIP_FOLDER_NAME)
         else:
             compile_flag = "-m32 " if self.settings.arch == "x86" else ""
             compile_flag += " -fPIC "
