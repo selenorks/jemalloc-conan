@@ -26,6 +26,7 @@ else
 -isystem ${ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a/include \
 -isystem ${ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/include/backward \
 -fexceptions -Wno-psabi --sysroot=${ANDROID_NDK}/platforms/${PLATFORM}/arch-arm -funwind-tables -finline-limit=64 -fsigned-char -no-canonical-prefixes -march=armv7-a -mfloat-abi=softfp -mfpu=neon -fdata-sections -ffunction-sections -Wa,--noexecstack  -Wl,--fix-cortex-a8 -Wl,--no-undefined -Wl,--gc-sections -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now -Wl,-z,nocopyreloc -fdiagnostics-color=always -mthumb -fomit-frame-pointer -fno-strict-aliasing -fPIC $OPT_FLAGS"
+    export CPPFLAGS="${CFLAGS}"
     export CXXFLAGS="${CFLAGS}"
     export LDFLAGS="-fPIC -L${ANDROID_NDK}/platforms/${PLATFORM}/arch-arm/usr/lib --sysroot=${ANDROID_NDK}/platforms/${PLATFORM}/arch-arm"
     export LIBS="${ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a/libgnustl_shared.so"
