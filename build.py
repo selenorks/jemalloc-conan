@@ -15,14 +15,14 @@ if __name__ == "__main__":
     if platform.system() == "Linux":
         channel = os.getenv("CONAN_ARCHS", "x86,x86_64,armv7,armv8").split(",")
 
-        builder.add({"arch": "x86", "build_type": "Release", "compiler": "gcc"})
-        builder.add({"arch": "x86_64", "build_type": "Release", "compiler": "gcc"})
-        builder.add({"arch": "x86", "build_type": "Debug", "compiler": "gcc"})
-        builder.add({"arch": "x86_64", "build_type": "Debug", "compiler": "gcc"})
+        #builder.add({"arch": "x86", "build_type": "Release", "compiler": "gcc"})
+        #builder.add({"arch": "x86_64", "build_type": "Release", "compiler": "gcc"})
+        #builder.add({"arch": "x86", "build_type": "Debug", "compiler": "gcc"})
+        #builder.add({"arch": "x86_64", "build_type": "Debug", "compiler": "gcc"})
         #Adnroid
-        builder.add({"arch": "armv7", "os": "Android", "build_type": "Release", "compiler": "gcc"})
-        builder.add({"arch": "armv8", "os": "Android", "build_type": "Release", "compiler": "gcc"})
-        builder.add({"arch": "armv7", "os": "Android", "build_type": "Debug", "compiler": "gcc"})
+        #builder.add({"arch": "armv7", "os": "Android", "build_type": "Release", "compiler": "gcc"})
+        #builder.add({"arch": "armv8", "os": "Android", "build_type": "Release", "compiler": "gcc"})
+        #builder.add({"arch": "armv7", "os": "Android", "build_type": "Debug", "compiler": "gcc"})
         builder.add({"arch": "armv8", "os": "Android", "build_type": "Debug", "compiler": "gcc"})
 
         filtered_builds = []

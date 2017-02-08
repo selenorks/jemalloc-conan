@@ -6,7 +6,7 @@ import platform
 
 class JeMallocConan(ConanFile):
     name = "jemalloc"
-    version = "4.3.1"
+    version = "4.4.0"
     ZIP_FOLDER_NAME = "jemalloc-cmake-jemalloc-cmake.%s" % version
     settings = "os", "arch", "compiler", "build_type"
 
@@ -16,7 +16,7 @@ class JeMallocConan(ConanFile):
     url = "http://github.com/selenorks/jemalloc-conan"
 
     def source(self):
-        self.run("git clone https://github.com/jemalloc/jemalloc-cmake.git %s -b jemalloc-cmake.%s --depth 1" % (self.ZIP_FOLDER_NAME, self.version))
+        self.run("git clone https://github.com/jemalloc/jemalloc.git %s -b %s --depth 1" % (self.ZIP_FOLDER_NAME, self.version))
 
     def build(self):
         """ Define your project building. You decide the way of building it

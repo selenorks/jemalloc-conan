@@ -15,7 +15,7 @@ class DefaultNameConan(ConanFile):
     version = "0.1"
     settings = "os", "compiler", "arch", "build_type"
     generators = "cmake"
-    requires = "jemalloc/4.3.1@%s/%s" % (username, channel)
+    requires = "jemalloc/4.4.0@%s/%s" % (username, channel)
 
     def build(self):
         if not (self.settings.os == "iOS" or self.settings.os == "Android"):
